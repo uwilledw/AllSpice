@@ -27,6 +27,20 @@ public class RecipesController : ControllerBase
         }
     }
 
+    [HttpGet("{recipeId}")]
+    public ActionResult<Recipe> GetRecipe(int recipeId)
+    {
+        try
+        {
+            Recipe recipe = _recipesService.GetRecipe(recipeId);
+            return Ok(recipe);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
     [HttpPost]
     [Authorize]
     public async Task<ActionResult<Recipe>> CreateRecipe([FromBody] Recipe recipeData)
@@ -44,4 +58,33 @@ public class RecipesController : ControllerBase
         }
     }
 
+    [HttpPut("{recipeId}")]
+    [Authorize]
+    public ActionResult<Recipe> EditRecipe([FromBody] Recipe recipeData, int recipeId)
+    {
+        try
+        {
+            recipeData.Id = recipeId;
+            Recipe recipe = _recipesService.EditRecipe(recipeData, recipeId);
+            return Ok(recipe);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpDelete("{recipeId}")]
+    public ActionResult<string> Remove(int recipeId)
+    {
+        try
+        {
+            string message = _recipesService.Remove(recipeId);
+            return Ok(message);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
 }
