@@ -21,6 +21,19 @@ CREATE TABLE
         FOREIGN KEY (creatorId) REFERENCES accounts(id) ON DELETE CASCADE
     ) default charset utf8mb4 COMMENT '';
 
+CREATE TABLE
+    IF NOT EXISTS ingredients(
+        id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Time Created',
+        updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
+        name VARCHAR(50) NOT NULL,
+        quantity VARCHAR(255) NOT NULL,
+        recipeId INT NOT NULL,
+        FOREIGN KEY (recipeId) REFERENCES recipes(id) ON DELETE CASCADE
+    ) default charset utf8mb4 COMMENT '';
+
+INSERT INTO ingredients();
+
 DROP TABLE recipes;
 
 INSERT INTO
@@ -38,3 +51,15 @@ VALUES (
         'https://bing.com/th?id=OSK.d2f6fc51b2cd9aa681511c506b133200',
         '64498d5b793406b9a25ca11c'
     );
+
+CREATE TABLE
+    IF NOT EXISTS favorites(
+        id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Time Created',
+        updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
+        accountId VARCHAR(255) NOT NULL,
+        recipeId INT NOT NULL,
+        FOREIGN KEY(accountId) REFERENCES accounts(id) ON DELETE CASCADE,
+        FOREIGN KEY(recipeId) REFERENCES recipes(id) ON DELETE CASCADE,
+        UNIQUE(recipeId, accountId)
+    ) default charset utf8mb4 COMMENT '';
